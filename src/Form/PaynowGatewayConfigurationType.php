@@ -3,7 +3,7 @@
  * @author Jakub Cegiełka <kuba.ceg@gmail.com>
  */
 
-namespace SyliusPaynowPlugin\Form;
+namespace Kubaceg\SyliusPaynowPlugin\Form;
 
 use Paynow\Environment;
 use Symfony\Component\Form\AbstractType;

@@ -3,11 +3,11 @@
  * @author Jakub Cegiełka <kuba.ceg@gmail.com>
  */
 
-namespace SyliusPaynowPlugin;
+namespace Kubaceg\SyliusPaynowPlugin;
 
+use Kubaceg\SyliusPaynowPlugin\Model\PaynowApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
-use SyliusPaynowPlugin\Model\PaynowApi;
 
 class PaynowPaymentGatewayFactory extends GatewayFactory
 {

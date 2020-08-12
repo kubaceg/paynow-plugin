@@ -3,7 +3,7 @@
  * @author Jakub Cegiełka <kuba.ceg@gmail.com>
  */
 
-namespace SyliusPaynowPlugin\Model;
+namespace Kubaceg\SyliusPaynowPlugin\Model;
 
 final class PaynowApi
 {
