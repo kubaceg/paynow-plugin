@@ -8,7 +8,7 @@ namespace Kubaceg\SyliusPaynowPlugin;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class KubacegPaynow extends Bundle
+final class KubacegSyliusPaynow extends Bundle
 {
     use SyliusPluginTrait;
 }
