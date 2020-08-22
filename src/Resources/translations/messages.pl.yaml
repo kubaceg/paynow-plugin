@@ -1,0 +1,8 @@
+kubaceg:
+    paynow:
+        paynow: Paynow
+        production: Produkcyjne
+        sandbox: Testowe
+        environment_type: Typ środowiska
+        api_key: API-Key
+        signature_key: Signature key

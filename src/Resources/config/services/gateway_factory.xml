@@ -1,13 +1,10 @@
-<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-
-        <defaults public="true" autoconfigure="false" autowire="false"/>
-
-        <service id="kubaceg.paynow.gateway_factory" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
-            <argument>Kubaceg\SyliusPaynowPlugin\PaynowPaymentGatewayFactory</argument>
+        <service id="kubaceg_sylius_paynow_plugin.gateway_factory.paynow" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
+            <argument type="string">Kubaceg\SyliusPaynowPlugin\PaynowGatewayFactory</argument>
             <tag name="payum.gateway_factory_builder" factory="paynow"/>
         </service>
-
     </services>
 </container>

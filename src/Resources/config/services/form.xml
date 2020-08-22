@@ -4,9 +4,9 @@
 
         <defaults public="true" autoconfigure="false" autowire="false"/>
 
-        <service id="kubaceg.paynow.form.type.gateway_configuration" class="Kubaceg\SyliusPaynowPlugin\Form\PaynowGatewayConfigurationType">
-            <tag name="kubaceg.paynow.gateway_form" type="paynow" label="kubaceg.paynow.paynow"/>
-            <tag name="form.type"/>
+        <service id="kubaceg_sylius_paynow_plugin.form.type.gateway_configuration" class="Kubaceg\SyliusPaynowPlugin\Form\PaynowGatewayConfigurationType">
+            <tag name="sylius.gateway_configuration_type" type="paynow" label="kubaceg.paynow.paynow" />
+            <tag name="form.type" />
         </service>
     </services>
 </container>
