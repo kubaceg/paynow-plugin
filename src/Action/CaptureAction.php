@@ -21,7 +21,9 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Payment\Model\PaymentInterface;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface
@@ -36,29 +38,36 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getModel();
 
+        /** @var OrderInterface $order */
+        $order = $request->getFirstModel()->getOrder();
+
         $client = new Client($this->api->getApiKey(), $this->api->getSignatureKey(), $this->api->getEnvironment());
 
-        $idempotencyKey = uniqid($payment->getId() . '_');
+        $idempotencyKey = uniqid($payment->getId().'_');
         $paymentData = [
             "amount" => $payment->getAmount(),
             "currency" => $payment->getCurrencyCode(),
             "externalId" => $payment->getId(),
-            "description" => "Mamelki",
+            "description" => "Zakupy na mamelki-elemelki.pl",
             "buyer" => [
-                "email" => "aaa@aaa.pl"
-            ]
+                "email" => $order->getUser()->getEmail(),
+            ],
         ];
 
         try {
             $payment = new Payment($client);
-            $response = $payment->authorize($paymentData, $idempotencyKey)->getRedirectUrl();
+            $response = $payment->authorize($paymentData, $idempotencyKey);
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
         } catch (PaynowException $e) {
             $response = $e->getResponse();
         } finally {
-            $payment->setDetails(['status' => $response->getStatusCode()]);
+            $payment->setDetails(['status' => $response->getStatus()]);
+            $payment->setDetails(['paynowId' => $response->getPaymentId()]);
         }
+
+
+        throw new HttpRedirect($response->getRedirectUrl());
     }
 
     /**
@@ -78,7 +87,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
     public function setApi($api)
     {
         if (!$api instanceof PaynowApi) {
-            throw new UnsupportedApiException('Not supported. Expected an instance of ' . PaynowApi::class);
+            throw new UnsupportedApiException('Not supported. Expected an instance of '.PaynowApi::class);
         }
 
         $this->api = $api;

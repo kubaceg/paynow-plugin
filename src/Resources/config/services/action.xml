@@ -11,5 +11,6 @@
         <service id="kubaceg_sylius_paynow_plugin.gateway_factory.action.status" class="Kubaceg\SyliusPaynowPlugin\Action\StatusAction">
             <tag name="payum.action" factory="paynow" alias="payum.action.status" />
         </service>
+
     </services>
 </container>

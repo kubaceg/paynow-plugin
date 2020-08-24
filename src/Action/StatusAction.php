@@ -1,18 +1,12 @@
 <?php
 
-/*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
-
 declare(strict_types=1);
 
 namespace Kubaceg\SyliusPaynowPlugin\Action;
 
+use Paynow\Model\Payment\Status;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -27,21 +21,27 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var PaymentInterface $payment */
-        $payment = $request->getFirstModel();
+        $model = ArrayObject::ensureArrayObject($request->getModel());
+        $status = $model['status'] ?? null;
 
-        $details = $payment->getDetails();
-
-        if (200 === $details['status']) {
-            $request->markCaptured();
-
-            return;
-        }
-
-        if (400 === $details['status']) {
-            $request->markFailed();
-
-            return;
+        switch ($status) {
+            case Status::STATUS_NEW:
+                $request->markNew();
+                break;
+            case Status::STATUS_PENDING:
+                $request->markPending();
+                break;
+            case Status::STATUS_REJECTED:
+                $request->setCanceled();
+                break;
+            case Status::STATUS_CONFIRMED:
+                $request->setCaptured();
+                break;
+            case Status::STATUS_ERROR:
+                $request->markSuspended();
+                break;
+            default:
+                $request->markUnknown();
         }
     }
 
@@ -49,6 +49,6 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
     {
         return
             $request instanceof GetStatusInterface &&
-            $request->getFirstModel() instanceof PaymentInterface;
+            $request->getModel() instanceof PaymentInterface;
     }
 }
