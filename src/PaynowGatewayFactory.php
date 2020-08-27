@@ -10,12 +10,16 @@ use Payum\Core\GatewayFactory;
 
 final class PaynowGatewayFactory extends GatewayFactory
 {
+    public const PAYNOW_METHOD_CODE = 'paynow';
+
     protected function populateConfig(ArrayObject $config)
     {
-        $config->defaults([
-            'payum.factory_name' => 'paynow',
-            'payum.factory_title' => 'paynow',
-        ]);
+        $config->defaults(
+            [
+                'payum.factory_name' => self::PAYNOW_METHOD_CODE,
+                'payum.factory_title' => 'Paynow',
+            ]
+        );
 
         $config['payum.api'] = function (ArrayObject $config) {
             return new PaynowApi($config['environment'], $config['api_key'], $config['signature_key']);
