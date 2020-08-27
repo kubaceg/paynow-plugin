@@ -50,7 +50,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
             'externalId' => $payment->getId(),
             'description' => $this->api->getTransferTitle(),
             'buyer' => [
-                'email' => $order->getUser()->getEmail(),
+                'email' => $order->getCustomer()->getEmail(),
             ],
         ];
 
