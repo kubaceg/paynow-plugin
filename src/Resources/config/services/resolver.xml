@@ -4,7 +4,9 @@
     <services>
         <defaults public="true"/>
 
-        <service id="kubaceg_sylius_paynow_plugin.resolver.payment_state" class="Kubaceg\SyliusPaynowPlugin\Resolver\PaymentStateResolver" autowire="true" autoconfigure="true">
+        <service id="kubaceg_sylius_paynow_plugin.resolver.payment_state" class="Kubaceg\SyliusPaynowPlugin\Resolver\PaymentStateResolver">
+            <argument type="service" id="sm.factory" />
+            <argument type="service" id="sylius.manager.payment" />
         </service>
     </services>
 </container>
