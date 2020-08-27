@@ -1,7 +1,6 @@
 <?php
-/**
- * @author Jakub Cegiełka <kuba.ceg@gmail.com>
- */
+
+declare(strict_types=1);
 
 namespace Kubaceg\SyliusPaynowPlugin\Controller;
 
@@ -19,10 +18,6 @@ final class NotifyController extends AbstractController implements ApiAwareInter
     /** @var PaynowApi */
     private $api;
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     public function notifyAction(Request $request): Response
     {
         $payload = trim(file_get_contents('php://input'));
@@ -31,10 +26,8 @@ final class NotifyController extends AbstractController implements ApiAwareInter
 
         try {
             new Notification($this->api->getSignatureKey(), $payload, $headers);
-
-
         } catch (\Exception $exception) {
-            throw new BadRequestHttpException("Bad request");
+            throw new BadRequestHttpException('Bad request');
         }
 
         return new Response('', Response::HTTP_OK);
@@ -43,7 +36,7 @@ final class NotifyController extends AbstractController implements ApiAwareInter
     public function setApi($api)
     {
         if (!$api instanceof PaynowApi) {
-            throw new UnsupportedApiException('Not supported. Expected an instance of '.PaynowApi::class);
+            throw new UnsupportedApiException('Not supported. Expected an instance of ' . PaynowApi::class);
         }
 
         $this->api = $api;

@@ -27,18 +27,23 @@ final class StatusAction implements ActionInterface, GatewayAwareInterface
         switch ($status) {
             case Status::STATUS_NEW:
                 $request->markNew();
+
                 break;
             case Status::STATUS_PENDING:
                 $request->markPending();
+
                 break;
             case Status::STATUS_REJECTED:
                 $request->setCanceled();
+
                 break;
             case Status::STATUS_CONFIRMED:
                 $request->setCaptured();
+
                 break;
             case Status::STATUS_ERROR:
                 $request->markSuspended();
+
                 break;
             default:
                 $request->markUnknown();

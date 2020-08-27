@@ -43,14 +43,14 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
 
         $client = new Client($this->api->getApiKey(), $this->api->getSignatureKey(), $this->api->getEnvironment());
 
-        $idempotencyKey = uniqid($payment->getId().'_');
+        $idempotencyKey = uniqid($payment->getId() . '_');
         $paymentData = [
-            "amount" => $payment->getAmount(),
-            "currency" => $payment->getCurrencyCode(),
-            "externalId" => $payment->getId(),
-            "description" => $this->api->getTransferTitle(),
-            "buyer" => [
-                "email" => $order->getUser()->getEmail(),
+            'amount' => $payment->getAmount(),
+            'currency' => $payment->getCurrencyCode(),
+            'externalId' => $payment->getId(),
+            'description' => $this->api->getTransferTitle(),
+            'buyer' => [
+                'email' => $order->getUser()->getEmail(),
             ],
         ];
 
@@ -66,13 +66,11 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
             $payment->setDetails(['paynowId' => $response->getPaymentId()]);
         }
 
-
         throw new HttpRedirect($response->getRedirectUrl());
     }
 
     /**
      * @param mixed $request
-     * @return bool
      */
     public function supports($request): bool
     {
@@ -87,7 +85,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
     public function setApi($api)
     {
         if (!$api instanceof PaynowApi) {
-            throw new UnsupportedApiException('Not supported. Expected an instance of '.PaynowApi::class);
+            throw new UnsupportedApiException('Not supported. Expected an instance of ' . PaynowApi::class);
         }
 
         $this->api = $api;
