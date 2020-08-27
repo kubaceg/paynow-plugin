@@ -22,7 +22,7 @@ final class PaynowGatewayFactory extends GatewayFactory
         );
 
         $config['payum.api'] = function (ArrayObject $config) {
-            return new PaynowApi($config['environment'], $config['api_key'], $config['signature_key']);
+            return new PaynowApi($config['environment'], $config['api_key'], $config['signature_key'], $config['transfer_title']);
         };
     }
 }
