@@ -5,6 +5,8 @@
         <defaults public="true"/>
 
         <service id="kubaceg_sylius_paynow_plugin.controller.notify" class="Kubaceg\SyliusPaynowPlugin\Controller\NotifyController" autowire="true" autoconfigure="true">
+            <argument type="string">sylius.repository.order.class</argument>
+            <argument type="string">kubaceg_sylius_paynow_plugin.resolver.payment_state</argument>
         </service>
     </services>
 </container>
