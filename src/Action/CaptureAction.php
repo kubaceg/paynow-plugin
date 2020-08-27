@@ -43,7 +43,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
 
         $client = new Client($this->api->getApiKey(), $this->api->getSignatureKey(), $this->api->getEnvironment());
 
-        $idempotencyKey = uniqid($payment->getId() . '_');
+        $idempotencyKey = uniqid($payment->getId().'_');
         $paymentData = [
             'amount' => $payment->getAmount(),
             'currency' => $payment->getCurrencyCode(),
@@ -55,8 +55,8 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
         ];
 
         try {
-            $payment = new Payment($client);
-            $response = $payment->authorize($paymentData, $idempotencyKey);
+            $paynowPayment = new Payment($client);
+            $response = $paynowPayment->authorize($paymentData, $idempotencyKey);
         } catch (RequestException $exception) {
             $response = $exception->getResponse();
         } catch (PaynowException $e) {
@@ -85,7 +85,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
     public function setApi($api)
     {
         if (!$api instanceof PaynowApi) {
-            throw new UnsupportedApiException('Not supported. Expected an instance of ' . PaynowApi::class);
+            throw new UnsupportedApiException('Not supported. Expected an instance of '.PaynowApi::class);
         }
 
         $this->api = $api;
