@@ -48,7 +48,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
             "amount" => $payment->getAmount(),
             "currency" => $payment->getCurrencyCode(),
             "externalId" => $payment->getId(),
-            "description" => "Zakupy na mamelki-elemelki.pl",
+            "description" => $this->api->getTransferTitle(),
             "buyer" => [
                 "email" => $order->getUser()->getEmail(),
             ],

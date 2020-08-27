@@ -57,6 +57,21 @@ class PaynowGatewayConfigurationType extends AbstractType
                         ),
                     ],
                 ]
+            )
+            ->add(
+                'transfer_title',
+                TextType::class,
+                [
+                    'label' => 'kubaceg.paynow.transfer_title',
+                    'constraints' => [
+                        new NotBlank(
+                            [
+                                'message' => 'kubaceg.paynow.gateway_configuration.transfer_title.not_blank',
+                                'groups' => ['sylius'],
+                            ]
+                        ),
+                    ],
+                ]
             );
     }
 }

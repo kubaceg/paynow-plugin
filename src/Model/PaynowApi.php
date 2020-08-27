@@ -16,16 +16,21 @@ final class PaynowApi
     /** @var string */
     private $signatureKey;
 
+    /** @var string */
+    private $transferTitle;
+
     /**
      * @param string $environment
      * @param string $apiKey
      * @param string $signatureKey
+     * @param string $transferTitle
      */
-    public function __construct(string $environment, string $apiKey, string $signatureKey)
+    public function __construct(string $environment, string $apiKey, string $signatureKey, string $transferTitle)
     {
         $this->environment = $environment;
         $this->apiKey = $apiKey;
         $this->signatureKey = $signatureKey;
+        $this->transferTitle = $transferTitle;
     }
 
     /**
@@ -50,5 +55,13 @@ final class PaynowApi
     public function getSignatureKey(): string
     {
         return $this->signatureKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferTitle(): string
+    {
+        return $this->transferTitle;
     }
 }

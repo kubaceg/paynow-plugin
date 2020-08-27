@@ -6,3 +6,4 @@ kubaceg:
         environment_type: Typ środowiska
         api_key: API-Key
         signature_key: Signature key
+        transfer_title: Tytuł przelewu
