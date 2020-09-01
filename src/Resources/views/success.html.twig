@@ -1,0 +1,9 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% block content %}
+    {% if paymentStatus == constant('Paynow\\Model\\Payment\\Status::STATUS_CONFIRMED') %}
+        Dziękujemy za zlożenie zamówienia. Twoja płatność została przetworzona pomyślnie.
+    {% else %}
+        Dziękujemy za zlożenie zamówienia. Twoja płatność nadal jest przetwarzana.
+    {% endif %}
+{% endblock %}
