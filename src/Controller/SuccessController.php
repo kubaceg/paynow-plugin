@@ -6,6 +6,7 @@
 namespace Kubaceg\SyliusPaynowPlugin\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 final class SuccessController
@@ -24,18 +25,18 @@ final class SuccessController
 
     /**
      * @param Request $request
-     * @return string
+     * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function successAction(Request $request): string
+    public function successAction(Request $request): Response
     {
         $params = [
             'paymentId' => $request->get('paymentId'),
             'paymentStatus' => $request->get('paymentStatus'),
         ];
 
-        return $this->environment->render('@KubacegSyliusPaynowPlugin/success.html.twig', $params);
+        return new Response($this->environment->render('@KubacegSyliusPaynowPlugin/success.html.twig', $params));
     }
 }
