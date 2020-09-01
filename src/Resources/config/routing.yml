@@ -2,4 +2,4 @@ kubaceg_sylius_paynow_plugin_notify:
   path: /payment/paynow/notify
   methods: [POST]
   defaults:
-    _controller: kubaceg_sylius_paynow_plugin.controller.notify
+    _controller: kubaceg_sylius_paynow_plugin.controller.notify:notifyAction

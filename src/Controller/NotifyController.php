@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace Kubaceg\SyliusPaynowPlugin\Controller;
 
-use Kubaceg\SyliusPaynowPlugin\Model\PaynowApi;
 use Kubaceg\SyliusPaynowPlugin\PaynowGatewayFactory;
 use Kubaceg\SyliusPaynowPlugin\Resolver\PaymentStateResolver;
 use Paynow\Notification;
-use Payum\Core\ApiAwareInterface;
-use Payum\Core\Exception\UnsupportedApiException;
-use Sylius\Bundle\OrderBundle\Doctrine\ORM\OrderRepository;
+use Sylius\Bundle\CoreBundle\Doctrine\ORM\OrderRepository;
 use Sylius\Component\Core\Model\Order;
+use Sylius\Component\Core\Model\Payment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-final class NotifyController extends AbstractController implements ApiAwareInterface
+final class NotifyController extends AbstractController
 {
-    /** @var PaynowApi */
-    private $api;
-
     /** @var OrderRepository */
     private $orderRepository;
 
@@ -41,31 +36,33 @@ final class NotifyController extends AbstractController implements ApiAwareInter
         $notificationData = json_decode($payload, true);
 
         try {
-            new Notification($this->api->getSignatureKey(), $payload, $headers);
-
             /** @var Order $order */
             $order = $this->orderRepository->findOneByNumber($notificationData['externalId']);
-
+            /** @var Payment $payment */
             $payment = $order->getLastPayment();
 
             if ($payment->getMethod()->getCode() !== PaynowGatewayFactory::PAYNOW_METHOD_CODE) {
                 throw new BadRequestHttpException('Invalid payment method');
             }
 
+            $signatureKey = $this->getSignatureKey($payment);
+            new Notification($signatureKey, $payload, $headers);
+
             $this->stateResolver->resolve($payment, $notificationData['status']);
         } catch (\Exception $exception) {
-            throw new BadRequestHttpException('Bad request');
+            throw new BadRequestHttpException($exception->getMessage());
         }
 
         return new Response('', Response::HTTP_OK);
     }
 
-    public function setApi($api)
+    private function getSignatureKey(Payment $payment): string
     {
-        if (!$api instanceof PaynowApi) {
-            throw new UnsupportedApiException('Not supported. Expected an instance of ' . PaynowApi::class);
+        $gatewayConfig = $payment->getMethod()->getGatewayConfig()->getConfig();
+        if (!isset($gatewayConfig['signature_key'])) {
+            throw new BadRequestHttpException('Invalid data');
         }
 
-        $this->api = $api;
+        return $gatewayConfig['signature_key'];
     }
 }
