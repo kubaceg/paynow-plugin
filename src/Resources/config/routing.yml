@@ -1,11 +1,5 @@
 kubaceg_sylius_paynow_plugin_notify:
   path: /payment/paynow/notify
-  methods: [POST]
+  methods: [POST, GET]
   defaults:
     _controller: kubaceg_sylius_paynow_plugin.controller.notify:notifyAction
-
-kubaceg_sylius_paynow_plugin_success:
-  path: /payment/paynow/success
-  methods: [GET]
-  defaults:
-    _controller: kubaceg_sylius_paynow_plugin.controller.success:successAction

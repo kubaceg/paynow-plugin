@@ -8,9 +8,5 @@
             <argument type="service" id="sylius.repository.order"/>
             <argument type="service" id="kubaceg_sylius_paynow_plugin.resolver.payment_state"/>
         </service>
-
-        <service id="kubaceg_sylius_paynow_plugin.controller.success" class="Kubaceg\SyliusPaynowPlugin\Controller\SuccessController" autowire="true" autoconfigure="true">
-            <argument type="service" id="twig"/>
-        </service>
     </services>
 </container>
